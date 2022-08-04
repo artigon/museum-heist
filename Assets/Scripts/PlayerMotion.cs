@@ -57,4 +57,5 @@ public class PlayerMotion : MonoBehaviour
         if(gotCaught)
             textTest.SetActive(true);
     }
+
 }

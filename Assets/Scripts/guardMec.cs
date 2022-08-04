@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class guardMec : MonoBehaviour
 {
     private AudioSource sound;
+    public GameObject text;
 
     private Animator animator;
     private NavMeshAgent agent;
@@ -15,17 +16,16 @@ public class guardMec : MonoBehaviour
     private bool atTarget;
 
     //for sight
-    public GameObject originSight;
-    private Vector3 origin;
-    public float sphereRadius;
-    private Vector3 direction;
-    public float maxDistance;
-    public LayerMask layerMask;
-    public GameObject currentHitObject;
-    private float currentHitDisance;
+    public float sightRange;
+    public float hearingRange;//for now use this for testing
+    public float checkRangeForBust, bustRange;
+    public bool playerInRange, playerInBustRange;
+    public LayerMask whatIsPlayer;
+
 
     //patrol
-    private Vector3[] points = new Vector3[9];
+    public GameObject[] pointsObj;
+    private Vector3[] points = new Vector3[11];
     private float y = 3f;
     private int lastPoint = -1;
     private int newPoint = -2;
@@ -33,6 +33,8 @@ public class guardMec : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         sound = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -46,70 +48,62 @@ public class guardMec : MonoBehaviour
         points[6] = new Vector3(-77.4f, y, -268.3f);
         points[7] = new Vector3(-7.6f, y, -268.2f);
         points[8] = new Vector3(-0.8f, y, -111.8f);
+        points[9] = new Vector3(41f, y, -160.83f);
+        points[10] = new Vector3(-40.78f, y, -160.83f);
 
-        newPoint = Random.Range(0, 8);
+        newPoint = Random.Range(0, 10);
         if (newPoint != lastPoint)
             target = points[newPoint];
         lastPoint = newPoint;
 
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+        
 
         if (this.transform.position.x - target.x <= 0.05f &&
                 this.transform.position.z - target.z <= 0.05 &&
                 target != player.transform.position)
         {
-            newPoint = Random.Range(0, 8);
+            newPoint = Random.Range(0, 10);
             if (newPoint != lastPoint)
                 target = points[newPoint];
             lastPoint = newPoint;
         }
 
+
+
         if (agent.enabled)
             agent.SetDestination(target);
 
-        origin = originSight.transform.position;
-        direction = transform.forward;
-        RaycastHit hit;
-        if (Physics.SphereCast(origin, sphereRadius, direction, out hit, maxDistance, layerMask, QueryTriggerInteraction.UseGlobal))
+        playerInRange = Physics.CheckSphere(this.transform.position, hearingRange, whatIsPlayer);
+        if(playerInRange)
         {
-            currentHitObject = hit.transform.gameObject;
-            currentHitDisance = hit.distance;
-            if (currentHitObject == player)
-            {
-                sound.Play();
-                atTarget = true;
-                target = player.transform.position;
-                StartCoroutine(isPlayerStillThere());
-            }
+            bustRange = Vector3.Distance(player.transform.position, this.transform.position);
+            if (bustRange <= checkRangeForBust)
+                playerInBustRange = true;
+            else
+                playerInBustRange = false;
         }
-        else
-        {
-            currentHitDisance = maxDistance;
-            currentHitObject = null;
-        }
+
+        if (playerInRange && !playerInBustRange)
+            StartCoroutine(isPlayerStillThere());
+        else if (playerInBustRange && playerInRange)
+            helpSoundFunc();
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void helpSoundFunc()
     {
-        if (other.gameObject == player)
-            PlayerMotion.gotCaught = true;
-    }
+        sound.Play();
+        playerBusted();
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Debug.DrawLine(origin, origin + direction * currentHitDisance);
-        Gizmos.DrawWireSphere(origin + direction * currentHitDisance, sphereRadius);
     }
 
     IEnumerator isPlayerStillThere()
     {
-        
         lastTarget = target;
         target = player.transform.position;
         yield return new WaitForSeconds(20);
@@ -118,5 +112,10 @@ public class guardMec : MonoBehaviour
             target = lastTarget;
             atTarget = false;
         }
+    }
+
+    public void playerBusted()
+    {
+        text.SetActive(true);
     }
 }

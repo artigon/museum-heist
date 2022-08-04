@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7829851301188541053}
   m_Layer: 0
   m_Name: Painting
-  m_TagString: Untagged
+  m_TagString: art
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -266,8 +266,8 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Color: {r: 0.9245283, g: 0.8657656, b: 0.61635214, a: 1}
+  m_Intensity: 3
   m_Range: 21.595133
   m_SpotAngle: 53.07272
   m_InnerSpotAngle: 21.80208

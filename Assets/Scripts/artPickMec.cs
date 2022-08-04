@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class paintingPickMec : MonoBehaviour
+public class artPickMec : MonoBehaviour
 {
-    public GameObject[] paintings;
+    public GameObject[] arts;
     // Start is called before the first frame update
     void Start()
     {
-       paintings[Random.Range(0, paintings.Length)].GetComponent<paintingMec>().light.SetActive(true);
+        arts = GameObject.FindGameObjectsWithTag("art");
+        arts[Random.Range(0, arts.Length)].GetComponent<paintingMec>().light.SetActive(true);
     }
 
     // Update is called once per frame
