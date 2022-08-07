@@ -81,6 +81,7 @@ public class guardMec : MonoBehaviour
         playerInRange = Physics.CheckSphere(this.transform.position, hearingRange, whatIsPlayer);
         if(playerInRange)
         {
+            sound.Play();
             bustRange = Vector3.Distance(player.transform.position, this.transform.position);
             if (bustRange <= checkRangeForBust)
                 playerInBustRange = true;
@@ -91,14 +92,7 @@ public class guardMec : MonoBehaviour
         if (playerInRange && !playerInBustRange)
             StartCoroutine(isPlayerStillThere());
         else if (playerInBustRange && playerInRange)
-            helpSoundFunc();
-
-    }
-
-    private void helpSoundFunc()
-    {
-        sound.Play();
-        playerBusted();
+            playerBusted();
 
     }
 
@@ -106,11 +100,12 @@ public class guardMec : MonoBehaviour
     {
         lastTarget = target;
         target = player.transform.position;
+        agent.speed = 10;
         yield return new WaitForSeconds(20);
-        if (!atTarget || !player.activeSelf)
+        if (!player.activeSelf)
         {
             target = lastTarget;
-            atTarget = false;
+            agent.speed = 5;
         }
     }
 
