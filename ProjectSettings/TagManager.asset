@@ -7,6 +7,9 @@ TagManager:
   - guard
   - guardPoint
   - art
+  - Window
+  - blackPanel
+  - gameSystem
   layers:
   - Default
   - TransparentFX

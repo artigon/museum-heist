@@ -7,10 +7,11 @@ public class paintingMec : MonoBehaviour
     public GameObject light;
     public GameObject pCamera;
     private bool ceck = false;
+    public gameSystem gameSystem;
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameSystem = GameObject.FindGameObjectWithTag("gameSystem").GetComponent<gameSystem>();
     }
 
     // Update is called once per frame
@@ -27,6 +28,7 @@ public class paintingMec : MonoBehaviour
                     {
                         PlayerMotion.havePainting = true;
                         this.gameObject.SetActive(false);
+                        gameSystem.gotTheArt = true;
                     }
                 }
             }
