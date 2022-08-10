@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class gameSystem : MonoBehaviour
 {
-    public GameObject blackPanel;
+    public Animator blackPanel;
     public GameObject[] windows;
     private Vector3 spawnPoint;
     public GameObject player;
     private AudioSource sound;
     private GameObject windowSelected;
     public bool gotTheArt = false;
+    public bool playerGotBack = false;
     // Start is called before the first frame update
     void Start()
     {
-        blackPanel = GameObject.FindGameObjectWithTag("blackPanel");
+        blackPanel = GameObject.FindGameObjectWithTag("blackPanel").GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         sound = this.transform.GetChild(0).GetComponent<AudioSource>();
         windows = GameObject.FindGameObjectsWithTag("Window");
@@ -28,15 +29,23 @@ public class gameSystem : MonoBehaviour
     {
         if (gotTheArt)
             windowSelected.GetComponent<windowMec>().showGrennPad();
+
+        if (playerGotBack)
+            StartCoroutine(winGame());
     }
 
     IEnumerator spwnPlayer()
     {
         spawnPoint = windowSelected.GetComponent<windowMec>().windowSelected();
         sound.Play();
-        yield return new WaitForSeconds(2);
-        blackPanel.SetActive(false);
+        yield return new WaitForSeconds(1.3f);
+        blackPanel.SetBool("state", true);
         player.transform.position = spawnPoint;
 
+    }
+
+    IEnumerator winGame()
+    {
+        yield return new WaitForSeconds(1);
     }
 }
