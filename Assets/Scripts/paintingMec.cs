@@ -6,7 +6,7 @@ public class paintingMec : MonoBehaviour
 {
     public GameObject light;
     public GameObject pCamera;
-    private bool ceck = false;
+    //private bool ceck = false;
     public gameSystem gameSystem;
     // Start is called before the first frame update
     void Start()

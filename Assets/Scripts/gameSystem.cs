@@ -17,15 +17,21 @@ public class gameSystem : MonoBehaviour
     public bool gameOn = true;
     private float Timer;
     public Text TimerText;
+    public GameObject theArt;
+    private string endTimer;
+    public scoresDataMec scorsMec;
+    public artPickMec artPick;
+    private bool gameEnded = false;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         sound = this.transform.GetChild(0).GetComponent<AudioSource>();
+        scorsMec = GameObject.FindGameObjectWithTag("scorsMec").GetComponent<scoresDataMec>();
+        artPick = GameObject.FindGameObjectWithTag("artStuff").GetComponent<artPickMec>();
         windows = GameObject.FindGameObjectsWithTag("Window");
-        int index = Random.Range(0, windows.Length);
-        windowSelected = windows[index];
-        StartCoroutine(spwnPlayer());
+        artPick.pickArt();
+        pickWindow();
     }
 
     // Update is called once per frame
@@ -34,9 +40,19 @@ public class gameSystem : MonoBehaviour
         if (gotTheArt)
             windowSelected.GetComponent<windowMec>().showGrennPad();
 
-        if (playerGotBack)
+        if (playerGotBack && !gameEnded)
             StartCoroutine(winGame());
         
+    }
+
+    public void pickWindow()
+    {
+        int index = Random.Range(0, windows.Length);
+        windowSelected = windows[index];
+        if (!(Vector3.Distance(theArt.transform.position, windowSelected.transform.position)
+            >= 100f))
+            pickWindow();
+        StartCoroutine(spwnPlayer());
     }
 
     IEnumerator timer()
@@ -49,7 +65,6 @@ public class gameSystem : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
             TimerText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
             StartCoroutine(timer());
-
         }
     }
 
@@ -66,10 +81,13 @@ public class gameSystem : MonoBehaviour
 
     IEnumerator winGame()
     {
+        gameEnded = true;
         gameOn = false;
-        print("win");
+        endTimer = TimerText.text;
+        blackPanel.SetBool("state", false);
         player.transform.position = playerWaitPoint;
         yield return new WaitForSeconds(1);
+        scorsMec.addScore(endTimer);
     }
 
     

@@ -9,7 +9,7 @@ public class hidingCameraMec : MonoBehaviour
     public GameObject hCamera;
     private float angularSpeed = 150;
     private float rotationAboutY = 0;
-    private float rotationAboutX = 0;
+    //private float rotationAboutX = 0;
     private bool hiding = false;
 
 
@@ -17,7 +17,7 @@ public class hidingCameraMec : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        pCamera = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).transform.gameObject;
     }
 
     // Update is called once per frame

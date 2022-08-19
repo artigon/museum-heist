@@ -10,6 +10,8 @@ TagManager:
   - Window
   - blackPanel
   - gameSystem
+  - scorsMec
+  - artStuff
   layers:
   - Default
   - TransparentFX
