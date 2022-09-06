@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class guardMec : MonoBehaviour
 {
+    public gameSystem gameSystem;
+
     private AudioSource sound;
     public GameObject text;
 
@@ -33,6 +35,8 @@ public class guardMec : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameSystem = GameObject.FindGameObjectWithTag("gameSystem").GetComponent<gameSystem>();
+
         player = GameObject.FindGameObjectWithTag("Player");
 
         sound = GetComponent<AudioSource>();
@@ -111,6 +115,6 @@ public class guardMec : MonoBehaviour
 
     public void playerBusted()
     {
-        text.SetActive(true);
+        gameSystem.gameOverBoo = true;
     }
 }

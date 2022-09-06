@@ -22,6 +22,10 @@ public class gameSystem : MonoBehaviour
     public scoresDataMec scorsMec;
     public artPickMec artPick;
     private bool gameEnded = false;
+    public sceneMoverMec sceneMover;
+    public GameObject goBackMsg;
+    public GameObject gameOverkMsg;
+    public bool gameOverBoo = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,12 +41,21 @@ public class gameSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameOverBoo)
+            StartCoroutine(gameOver());
+
         if (gotTheArt)
             windowSelected.GetComponent<windowMec>().showGrennPad();
 
         if (playerGotBack && !gameEnded)
             StartCoroutine(winGame());
-        
+
+        if(gameEnded && Input.GetKeyDown(KeyCode.Space))
+        {
+            sceneMover.SceneMovement();
+        }
+
+
     }
 
     public void pickWindow()
@@ -86,9 +99,22 @@ public class gameSystem : MonoBehaviour
         endTimer = TimerText.text;
         blackPanel.SetBool("state", false);
         player.transform.position = playerWaitPoint;
+        Time.timeScale = 0f;
         yield return new WaitForSeconds(1);
         scorsMec.addScore(endTimer);
+        goBackMsg.SetActive(true);
     }
 
-    
+    IEnumerator gameOver()
+    {
+        blackPanel.SetBool("state", false);
+        yield return new WaitForSeconds(1);
+        Time.timeScale = 0f;
+        goBackMsg.SetActive(true);
+        gameOverkMsg.SetActive(true);
+        gameEnded = true;
+        gameOn = false;
+        endTimer = TimerText.text;
+        player.transform.position = playerWaitPoint;
+    }
 }
