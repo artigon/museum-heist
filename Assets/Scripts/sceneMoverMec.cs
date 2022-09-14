@@ -11,7 +11,7 @@ public class sceneMoverMec : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1 && firstMovment)
+        if (firstMovment)
         {
             firstMovment = false;
             SceneManager.LoadScene(0);
