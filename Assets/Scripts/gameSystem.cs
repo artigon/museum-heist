@@ -29,6 +29,7 @@ public class gameSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameOverBooRestart();
         player = GameObject.FindGameObjectWithTag("Player");
         sound = this.transform.GetChild(0).GetComponent<AudioSource>();
         scorsMec = GameObject.FindGameObjectWithTag("scorsMec").GetComponent<scoresDataMec>();
@@ -56,6 +57,12 @@ public class gameSystem : MonoBehaviour
         }
 
 
+    }
+
+    public void gameOverBooRestart()
+    {
+        gameOverBoo = false;
+        gameEnded = false;
     }
 
     public void pickWindow()
