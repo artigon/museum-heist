@@ -24,7 +24,7 @@ public class artPickMec : MonoBehaviour
     {
         
         int index = Random.Range(0, arts.Length);
-        arts[index].GetComponent<paintingMec>().light.SetActive(true);
+        arts[index].GetComponent<paintingMec>().greenlight.SetActive(true);
         gameSystem.theArt = arts[index];
     }
 }

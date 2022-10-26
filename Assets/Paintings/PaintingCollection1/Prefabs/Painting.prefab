@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bf21cb49e41204c8149e86e5ff7ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 773309724120520330}
+  greenlight: {fileID: 773309724120520330}
   pCamera: {fileID: 0}
+  gameSystem: {fileID: 0}
 --- !u!65 &7829851301188541053
 BoxCollider:
   m_ObjectHideFlags: 0

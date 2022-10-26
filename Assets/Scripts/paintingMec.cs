@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class paintingMec : MonoBehaviour
 {
-    public GameObject light;
+    public GameObject greenlight;
     public GameObject pCamera;
     //private bool ceck = false;
     public gameSystem gameSystem;
@@ -17,7 +17,7 @@ public class paintingMec : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (light.activeSelf)
+        if (greenlight.activeSelf)
         {
             RaycastHit hit;
             if (Physics.Raycast(pCamera.transform.position, pCamera.transform.forward, out hit))

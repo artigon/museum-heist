@@ -31,6 +31,7 @@ public class guardMec : MonoBehaviour
     private float y = 3f;
     private int lastPoint = -1;
     private int newPoint = -2;
+    private bool runingToPlayer = false;
 
     // Start is called before the first frame update
     void Start()
@@ -98,18 +99,26 @@ public class guardMec : MonoBehaviour
         else if (playerInBustRange && playerInRange)
             playerBusted();
 
+        if (runingToPlayer)
+            if(this.transform.position.x - target.x <= 0.05f &&
+                this.transform.position.z - target.z <= 0.05)
+                    animator.SetBool("state", true);
+
     }
 
     IEnumerator isPlayerStillThere()
     {
+        runingToPlayer = true;
         lastTarget = target;
         target = player.transform.position;
         agent.speed = 10;
         yield return new WaitForSeconds(20);
         if (!player.activeSelf)
         {
+            animator.SetBool("state", false);
             target = lastTarget;
             agent.speed = 5;
+            runingToPlayer = false;
         }
     }
 
